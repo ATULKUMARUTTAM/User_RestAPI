@@ -29,15 +29,25 @@ public class UserService {
              .map(this::mapToUserResponse)
              .collect(Collectors.toList());
     }
+//    public List<UserResponse> fetchAlluser() {
+//        List<User> userList = userRepository.findAll();
+//        List<UserResponse> userResponses = new ArrayList<>();
+//        for (User user : userList) {
+//            userResponses.add(mapToUserResponse(user));
+//        }
+//        return userResponses;
+//    }
+
 
     public void addUser(UserRequest userRequest)
     {
-
         User user = new User();
-        updateUserFromRequest(user, userRequest);
+        updateUserFromRequest(user, userRequest);           //Converting UserDTO Into User entity to persist
             userRepository.save(user);
     }
 
+
+    //Updates a User entity with data from a UserRequest DTO.
     private void updateUserFromRequest(User user, UserRequest userRequest) {
     user.setFname(userRequest.getFname());
     user.setLname(userRequest.getLname());
@@ -59,9 +69,15 @@ public class UserService {
     {
        return userRepository.findById(id).map(this::mapToUserResponse);
     }
+//    public Optional<UserResponse> fetchOneUser(Long id) {
+//        User user = userRepository.findById(id).orElse(null);
+//        if (user == null) {
+//            return Optional.empty();
+//        }
+//        return Optional.of(mapToUserResponse(user));
+//    }
 
     public Boolean updateUser(Long id, UserRequest updateduserRequest) {
-
         return userRepository.findById(id)
                 .map(existingUser ->{
                     updateUserFromRequest(existingUser, updateduserRequest);
@@ -69,7 +85,20 @@ public class UserService {
                     return true;
                 }).orElse(false);
     }
+//    public Boolean updateUser(Long id, UserRequest updatedUserRequest) {
+//        User existingUser = userRepository.findById(id).orElse(null);
+//        if (existingUser == null) {
+//            return false;
+//        }
+//        updateUserFromRequest(existingUser, updatedUserRequest);
+//        userRepository.save(existingUser);
+//        return true;
+//    }
 
+
+
+
+//    Converts a User entity to a UserResponse DTO for use in API responses
     private UserResponse mapToUserResponse(User user){
         UserResponse userResponse = new UserResponse();
         userResponse.setId(String.valueOf(user.getId()));
